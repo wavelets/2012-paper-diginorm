@@ -50,8 +50,14 @@ calc-r2.txt: calc-r2.py
 random.fa:
 	python make-random-genome.py > random.fa
 
+random.fa.hb:
+	${KHMER}/sandbox/load-into-hashbits.py -k 20 -N 4 -x 1e8 random.fa.hb random.fa
+
 transcripts.fa:
 	python make-random-transcriptome.py > transcripts.fa
+
+transcripts.fa.hb:
+	${KHMER}/sandbox/load-into-hashbits.py -k 20 -N 4 -x 1e8 transcripts.fa.hb transcripts.fa
 
 genome-reads.fa: random.fa
 	python make-reads.py random.fa > genome-reads.fa
@@ -80,17 +86,17 @@ genome-reads.fa.keep.abundfilt: genome-reads.fa.keep
 genome-reads.fa.keep.abundfilt.keep: genome-reads.fa.keep.abundfilt
 	${KHMER}/scripts/normalize-by-median.py -k 20 -N 4 -x 1e8 -C 5 --savehash genome-reads.fa.keep.abundfilt.keep.kh genome-reads.fa.keep.abundfilt
 
-random.x.genome-reads.fa.overlap: genome-reads.fa
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa genome-reads.fa random.x.genome-reads.fa.overlap
+random.x.genome-reads.fa.overlap: genome-reads.fa random.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa.hb genome-reads.fa random.x.genome-reads.fa.overlap
 
-random.x.genome-reads.fa.keep.overlap: genome-reads.fa.keep
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa genome-reads.fa.keep random.x.genome-reads.fa.keep.overlap
+random.x.genome-reads.fa.keep.overlap: genome-reads.fa.keep random.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa.hb genome-reads.fa.keep random.x.genome-reads.fa.keep.overlap
 
-random.x.genome-reads.fa.keep.abundfilt.overlap: genome-reads.fa.keep.abundfilt
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa genome-reads.fa.keep.abundfilt random.x.genome-reads.fa.keep.abundfilt.overlap
+random.x.genome-reads.fa.keep.abundfilt.overlap: genome-reads.fa.keep.abundfilt random.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa.hb genome-reads.fa.keep.abundfilt random.x.genome-reads.fa.keep.abundfilt.overlap
 
-random.x.genome-reads.fa.keep.abundfilt.keep.overlap: genome-reads.fa.keep.abundfilt.keep
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa genome-reads.fa.keep.abundfilt.keep random.x.genome-reads.fa.keep.abundfilt.keep.overlap
+random.x.genome-reads.fa.keep.abundfilt.keep.overlap: genome-reads.fa.keep.abundfilt.keep random.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 random.fa.hb genome-reads.fa.keep.abundfilt.keep random.x.genome-reads.fa.keep.abundfilt.keep.overlap
 
 transcript-reads.fa.kh: transcript-reads.fa
 	${KHMER}/scripts/load-into-counting.py -k 20 -N 4 -x 1e8 transcript-reads.fa.kh transcript-reads.fa
@@ -106,17 +112,17 @@ transcript-reads.fa.keep.abundfilt.keep: transcript-reads.fa.keep.abundfilt
 
 transcript-reads.fa.keep.abundfilt.keep: transcript-reads.fa.keep.abundfilt
 
-transcripts.x.transcript-reads.fa.overlap: transcript-reads.fa
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa transcript-reads.fa transcripts.x.transcript-reads.fa.overlap
+transcripts.x.transcript-reads.fa.overlap: transcript-reads.fa transcripts.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa.hb transcript-reads.fa transcripts.x.transcript-reads.fa.overlap
 
-transcripts.x.transcript-reads.fa.keep.overlap: transcript-reads.fa.keep
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa transcript-reads.fa.keep transcripts.x.transcript-reads.fa.keep.overlap
+transcripts.x.transcript-reads.fa.keep.overlap: transcript-reads.fa.keep transcripts.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa.hb transcript-reads.fa.keep transcripts.x.transcript-reads.fa.keep.overlap
 
-transcripts.x.transcript-reads.fa.keep.abundfilt.overlap: transcript-reads.fa.keep.abundfilt
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa transcript-reads.fa.keep.abundfilt transcripts.x.transcript-reads.fa.keep.abundfilt.overlap
+transcripts.x.transcript-reads.fa.keep.abundfilt.overlap: transcript-reads.fa.keep.abundfilt transcripts.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa.hb transcript-reads.fa.keep.abundfilt transcripts.x.transcript-reads.fa.keep.abundfilt.overlap
 
-transcripts.x.transcript-reads.fa.keep.abundfilt.keep.overlap: transcript-reads.fa.keep.abundfilt.keep
-	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa transcript-reads.fa.keep.abundfilt.keep transcripts.x.transcript-reads.fa.keep.abundfilt.keep.overlap
+transcripts.x.transcript-reads.fa.keep.abundfilt.keep.overlap: transcript-reads.fa.keep.abundfilt.keep transcripts.fa.hb
+	python ${KHMER}/scripts/count-overlap.py -k 20 -N 4 -x 1e8 transcripts.fa.hb transcript-reads.fa.keep.abundfilt.keep transcripts.x.transcript-reads.fa.keep.abundfilt.keep.overlap
 
 random.1.ebwt: random.fa
 	bowtie-build random.fa random
