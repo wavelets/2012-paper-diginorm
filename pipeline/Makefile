@@ -336,8 +336,8 @@ staph.rawreads.map.gz.cov: staph.rawreads.map.gz staph-genome.fa
 	python mapping-genome-cov-3.py staph-genome.fa staph.rawreads.map.gz staph.rawreads.map.gz.cov
 
 ../pipeline-data-new.tar.gz: 
-	wget https://s3.amazonaws.com/public.ged.msu.edu/2012-paper-diginorm/pipeline-data-new.tar.gz
-	tar xzvf pipeline-data-new.tar.gz
+	wget https://s3.amazonaws.com/public.ged.msu.edu/2012-paper-diginorm/pipeline-data-new.tar.gz -O ../pipeline-data-new.tar.gz
+	tar -xzv --directory .. -f ../pipeline-data-new.tar.gz 
 
 mapping.txt bacteria_mda_lane1.fastq.bz2 ecoliMG1655.fa trinity-300.fa sar324_contigs_lane1.fa staph-genome.fa mouse-5m.fq bacteria_mda_lane7.fastq.bz2 ecoli_ref-5m.fastq ecoli_ref.fastq.bz2:	../pipeline-data-new.tar.gz
 
