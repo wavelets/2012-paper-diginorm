@@ -192,7 +192,7 @@ ecoli_ref-5m.fastq.sorted.bam: ecoli_ref-5m.fastq.bam
 
 
 ecoli_ref.fastq.bz2.keep.map: ecoli_ref.fastq.bz2.keep ecoliMG1655.1.ebwt
-	bowtie -q -f -a --best --strata ecoliMG1655 ecoli_ref.fastq.bz2.keep > ecoli_ref.fastq.bz2.keep.map
+	bowtie -q -a --best --strata ecoliMG1655 ecoli_ref.fastq.bz2.keep > ecoli_ref.fastq.bz2.keep.map
 
 ecoli_ref.fastq.bz2.keep.map.cov: ecoli_ref.fastq.bz2.keep.map ecoliMG1655.1.ebwt
 	python mapping-genome-cov-3.py ecoliMG1655.fa ecoli_ref.fastq.bz2.keep.map ecoli_ref.fastq.bz2.keep.map.cov
