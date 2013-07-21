@@ -272,7 +272,7 @@ mouse-5m.fq.keep: mouse-5m.fq
 	python $(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1e9 mouse-5m.fq
 
 mouse-5m.fq.keep.map: mouse-5m.fq.keep
-	bowtie -q -f -a --best --strata trinity-300 mouse-5m.fq.keep > mouse-5m.fq.keep.map
+	bowtie -q -a --best --strata trinity-300 mouse-5m.fq.keep > mouse-5m.fq.keep.map
 
 mouse-5m.fq.keep.map.cov: mouse-5m.fq.keep.map trinity-300.fa
 	python mapping-genome-cov-3.py trinity-300.fa mouse-5m.fq.keep.map mouse-5m.fq.keep.map.cov
@@ -309,13 +309,13 @@ sar324.rawreads.map.gz: sar324.1.ebwt bacteria_mda_lane1.fastq.bz2
 	bunzip2 -c bacteria_mda_lane1.fastq.bz2 | bowtie -p 8 -q -a --best --strata sar324 - | gzip -9c > sar324.rawreads.map.gz
 
 staph.keep.rawreads.map.gz: staph.1.ebwt bacteria_mda_lane7.fastq.bz2.keep
-	cat bacteria_mda_lane7.fastq.bz2.keep | bowtie -q -p 8 -f -a --best --strata staph - | gzip -9c > staph.keep.rawreads.map.gz
+	cat bacteria_mda_lane7.fastq.bz2.keep | bowtie -q -p 8 -a --best --strata staph - | gzip -9c > staph.keep.rawreads.map.gz
 
 ecoli.keep.rawreads.map.gz: ecoliMG1655.1.ebwt  ecoli_ref.fastq.bz2.keep
-	cat ecoli_ref.fastq.bz2.keep | bowtie -q -p 8 -f -a --best --strata ecoliMG1655 - | gzip -9c > ecoli.keep.rawreads.map.gz
+	cat ecoli_ref.fastq.bz2.keep | bowtie -q -p 8 -a --best --strata ecoliMG1655 - | gzip -9c > ecoli.keep.rawreads.map.gz
 
 sar324.keep.rawreads.map.gz: sar324.1.ebwt bacteria_mda_lane1.fastq.bz2.keep
-	cat bacteria_mda_lane1.fastq.bz2.keep | bowtie -q -p 8 -f -a --best --strata sar324 - | gzip -9c > sar324.keep.rawreads.map.gz
+	cat bacteria_mda_lane1.fastq.bz2.keep | bowtie -q -p 8 -a --best --strata sar324 - | gzip -9c > sar324.keep.rawreads.map.gz
 
 ecoli.keep.rawreads.map.gz.cov: ecoli.keep.rawreads.map.gz ecoliMG1655.fa
 	python mapping-genome-cov-3.py ecoliMG1655.fa ecoli.keep.rawreads.map.gz ecoli.keep.rawreads.map.gz.cov
