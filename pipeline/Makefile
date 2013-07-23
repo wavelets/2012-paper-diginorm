@@ -83,7 +83,7 @@ genome-reads.fa.keep genome-reads.fa.keep.kh: genome-reads.fa
 genome-reads.fa.keep.abundfilt: genome-reads.fa.keep genome-reads.fa.keep.kh
 	${KHMER}/scripts/filter-abund.py genome-reads.fa.keep.kh genome-reads.fa.keep
 
-genome-reads.fa.keep.abundfilt.keep genome-reads.fa.keep.abundfilt.keep.fh: genome-reads.fa.keep.abundfilt
+genome-reads.fa.keep.abundfilt.keep genome-reads.fa.keep.abundfilt.keep.kh: genome-reads.fa.keep.abundfilt
 	${KHMER}/scripts/normalize-by-median.py -k 20 -N 4 -x 1e8 -C 5 --savehash genome-reads.fa.keep.abundfilt.keep.kh genome-reads.fa.keep.abundfilt
 
 random.x.genome-reads.fa.overlap: genome-reads.fa random.fa.hb
@@ -341,3 +341,5 @@ staph.rawreads.map.gz.cov: staph.rawreads.map.gz staph-genome.fa
 
 mapping.txt bacteria_mda_lane1.fastq.bz2 ecoliMG1655.fa trinity-300.fa sar324_contigs_lane1.fa staph-genome.fa mouse-5m.fq bacteria_mda_lane7.fastq.bz2 ecoli_ref-5m.fastq ecoli_ref.fastq.bz2:	../pipeline-data-new.tar.gz
 
+update-gitignore:
+	git status -s | grep \?\?\ [a-ZA-Z].* | awk '{ print $2 }'>> .gitignore
