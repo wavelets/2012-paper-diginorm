@@ -108,7 +108,6 @@ ecoli_ref.fastq.bz2
 ecoli_ref.fastq.bz2.keep
 ecoli_ref.report
 mapping.txt
-md5sums.txt
 mouse-5m.fq
 random.fa.hb
 random.fa.hb.info
