@@ -3,6 +3,8 @@ KHMER=${PWD}/../mr-c-khmer-bleeding-edge
 
 . ${KHMER}/.env/bin/activate
 
+pip install --quiet numpy
+
 cd pipeline
 
 make clean
