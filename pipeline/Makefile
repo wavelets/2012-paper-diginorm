@@ -107,7 +107,7 @@ transcript-reads.fa.keep transcript-reads.fa.keep.kh: transcript-reads.fa
 transcript-reads.fa.keep.abundfilt: transcript-reads.fa.keep transcript-reads.fa.keep.kh
 	${KHMER}/scripts/filter-abund.py transcript-reads.fa.keep.kh transcript-reads.fa.keep
 
-transcript-reads.fa.keep.abundfilt.keep transcript-reads.fa.abundfilt.keep.kh: transcript-reads.fa.keep.abundfilt
+transcript-reads.fa.keep.abundfilt.keep transcript-reads.fa.keep.abundfilt.keep.kh: transcript-reads.fa.keep.abundfilt
 	${KHMER}/scripts/normalize-by-median.py -k 20 -N 4 -x 1e8 -C 5 --savehash transcript-reads.fa.keep.abundfilt.keep.kh transcript-reads.fa.keep.abundfilt
 
 transcripts.x.transcript-reads.fa.overlap: transcript-reads.fa transcripts.fa.hb
