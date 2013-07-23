@@ -44,7 +44,7 @@ copydata:
 clean:
 	rm -f `cat clean-list.txt`
 
-calc-r2.txt: calc-r2.py
+calc-r2.txt: ecoli_ref-5m.fastq.counts.cmp genome-reads.fa.counts.cmp mouse-5m.fq.counts.cmp transcript-reads.fa.counts.cmp
 	python calc-r2.py > calc-r2.txt
 
 random.fa:
@@ -343,3 +343,4 @@ mapping.txt bacteria_mda_lane1.fastq.bz2 ecoliMG1655.fa trinity-300.fa sar324_co
 
 update-gitignore:
 	git status -s | grep \?\?\ [a-ZA-Z].* | awk '{ print $2 }'>> .gitignore
+
