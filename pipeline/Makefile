@@ -34,7 +34,8 @@ all: genome-reads.fa.kh genome-reads.fa.keep \
 	sar324.rawreads.map.gz.cov \
 	ecoli.keep.rawreads.map.gz.cov \
 	staph.keep.rawreads.map.gz.cov \
-	sar324.keep.rawreads.map.gz.cov
+	sar324.keep.rawreads.map.gz.cov \
+	sar_dn.x.sar_orig sar_orig.x.sar_dn
 
 copydata:
 	rm -fr ../data/
@@ -290,12 +291,53 @@ transcript-reads.fa.keep.map.cov: transcript-reads.fa.keep.map
 bacteria_mda_lane1.fastq.bz2.keep: bacteria_mda_lane1.fastq.bz2
 	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 20 bacteria_mda_lane1.fastq.bz2
 
+sar.keep.assembly.fa: bacteria_mda_lane1.fastq.bz2.keep
+	velveth sar.27 27 -short -fasta bacteria_mda_lane1.fastq.bz2.keep
+	velvetg sar.27 -scaffolding no -exp_cov auto -cov_cutoff auto
+	cp sar.27/contigs.fa sar.keep.assembly.fa
+
 bacteria_mda_lane7.fastq.bz2.keep: bacteria_mda_lane7.fastq.bz2
 	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 20 bacteria_mda_lane7.fastq.bz2
+
+staph.keep.assembly.fa: bacteria_mda_lane7.fastq.bz2.keep
+	velveth staph.27 27 -short -fasta bacteria_mda_lane7.fastq.bz2.keep
+	velvetg staph.27 -scaffolding no -exp_cov auto -cov_cutoff auto
+	cp staph.27/contigs.fa staph.keep.assembly.fa
 
 ecoli_ref.fastq.bz2.keep: ecoli_ref.fastq.bz2
 	$(KHMER)/scripts/normalize-by-median.py -R ecoli_ref.report -k 20 -N 4 -x 1.6e9 -C 20 ecoli_ref.fastq.bz2
 
+ecoli_ref.fastq.bz2.keep.assembly.fa: ecoli_ref.fastq.bz2.keep
+	velveth ecoli.37 37 -short -fasta ecoli_ref.fastq.bz2.keep
+	velvetg ecoli.37 -scaffolding no -exp_cov auto -cov_cutoff auto
+	cp ecoli.37/contigs.fa ecoli_ref.fastq.bz2.keep.assembly.fa
+
+ecoli_dn.faa: ecoli_ref.fastq.bz2.keep.assembly.fa
+	/mnt/prokka-1.7/bin/prokka ecoli_ref.fastq.bz2.keep.assembly.fa --outdir ecoli_dn --prefix ecoli_dn --force
+	cp ecoli_dn/ecoli_dn.faa .
+
+sar_dn.faa: sar.keep.assembly.fa
+	/mnt/prokka-1.7/bin/prokka sar.keep.assembly.fa --outdir sar_dn --prefix sar_dn --force
+	cp sar_dn/sar_dn.faa .
+
+staph_dn.faa: staph.keep.assembly.fa
+	/mnt/prokka-1.7/bin/prokka staph.keep.assembly.fa --outdir staph_dn --prefix staph_dn --force
+	cp staph_dn/staph_dn.faa .
+
+sar_orig.faa: sar324_contigs_lane1.fa
+	/mnt/prokka-1.7/bin/prokka sar324_contigs_lane1.fa --outdir sar_orig --prefix sar_orig --force
+	cp sar_orig/sar_orig.faa .
+
+sar_orig.x.sar_dn: sar_orig.faa sar_dn.faa
+	formatdb -i sar_dn.faa -o T -p T
+	blastall -i sar_orig.faa -d sar_dn.faa -p blastp -e 1e-3 -b 2 -v 2 -a 4 -o sar_orig.x.sar_dn
+
+sar_dn.x.sar_orig: sar_dn.faa sar_orig.faa
+	formatdb -i sar_orig.faa -o T -p T
+	blastall -i sar_dn.faa -d sar_orig.faa -p blastp -e 1e-3 -b 2 -v 2 -a 4 -o sar_dn.x.sar_orig
+
+
+####
 
 sar324.1.ebwt: sar324_contigs_lane1.fa 
 	bowtie-build sar324_contigs_lane1.fa sar324
