@@ -289,26 +289,44 @@ transcript-reads.fa.keep.map.cov: transcript-reads.fa.keep.map
 	python mapping-genome-cov-3.py transcripts.fa transcript-reads.fa.keep.map transcript-reads.fa.keep.map.cov
 
 bacteria_mda_lane1.fastq.bz2.keep: bacteria_mda_lane1.fastq.bz2
-	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 20 bacteria_mda_lane1.fastq.bz2
+	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 20 bacteria_mda_lane1.fastq.bz2 --savehash bacteria_mda_lane1.fastq.bz2.normC20k20.kh
 
-sar.keep.assembly.fa: bacteria_mda_lane1.fastq.bz2.keep
-	velveth sar.27 27 -short -fasta bacteria_mda_lane1.fastq.bz2.keep
+bacteria_mda_lane1.fastq.bz2.keep.abundfilt: bacteria_mda_lane1.fastq.bz2.keep
+	$(KHMER)/scripts/filter-abund.py bacteria_mda_lane1.fastq.bz2.normC20k20.kh bacteria_mda_lane1.fastq.bz2.keep
+
+bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep: bacteria_mda_lane1.fastq.bz2.keep.abundfilt
+	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 5 bacteria_mda_lane1.fastq.bz2.keep.abundfilt --savehash ecoli_ref.fastq.bz2.normC5k20.kh
+
+sar.keep.assembly.fa: bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep
+	velveth sar.27 27 -short -fastq bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep
 	velvetg sar.27 -scaffolding no -exp_cov auto -cov_cutoff auto
 	cp sar.27/contigs.fa sar.keep.assembly.fa
 
 bacteria_mda_lane7.fastq.bz2.keep: bacteria_mda_lane7.fastq.bz2
-	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 20 bacteria_mda_lane7.fastq.bz2
+	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 20 bacteria_mda_lane7.fastq.bz2 --savehash bacteria_mda_lane7.fastq.bz2.normC20k20.kh
 
-staph.keep.assembly.fa: bacteria_mda_lane7.fastq.bz2.keep
-	velveth staph.27 27 -short -fasta bacteria_mda_lane7.fastq.bz2.keep
+bacteria_mda_lane7.fastq.bz2.keep.abundfilt: bacteria_mda_lane7.fastq.bz2.keep
+	$(KHMER)/scripts/filter-abund.py bacteria_mda_lane7.fastq.bz2.normC20k20.kh bacteria_mda_lane7.fastq.bz2.keep
+
+bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep: bacteria_mda_lane7.fastq.bz2.keep.abundfilt
+	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 5 bacteria_mda_lane7.fastq.bz2.keep.abundfilt --savehash bacteria_mda_lane7.fastq.bz2.normC5k20.kh
+
+staph.keep.assembly.fa: bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep
+	velveth staph.27 27 -short -fastq bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep
 	velvetg staph.27 -scaffolding no -exp_cov auto -cov_cutoff auto
 	cp staph.27/contigs.fa staph.keep.assembly.fa
 
 ecoli_ref.fastq.bz2.keep: ecoli_ref.fastq.bz2
-	$(KHMER)/scripts/normalize-by-median.py -R ecoli_ref.report -k 20 -N 4 -x 1.6e9 -C 20 ecoli_ref.fastq.bz2
+	$(KHMER)/scripts/normalize-by-median.py -R ecoli_ref.report -k 20 -N 4 -x 1.6e9 -C 20 ecoli_ref.fastq.bz2 --savehash ecoli_ref.fastq.bz2.normC20k20.kh
 
-ecoli_ref.fastq.bz2.keep.assembly.fa: ecoli_ref.fastq.bz2.keep
-	velveth ecoli.37 37 -short -fasta ecoli_ref.fastq.bz2.keep
+ecoli_ref.fastq.bz2.keep.abundfilt: ecoli_ref.fastq.bz2.keep
+	$(KHMER)/scripts/filter-abund.py ecoli_ref.fastq.bz2.normC20k20.kh ecoli_ref.fastq.bz2.keep
+
+ecoli_ref.fastq.bz2.keep.abundfilt.keep: ecoli_ref.fastq.bz2.keep.abundfilt
+	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 5 ecoli_ref.fastq.bz2.keep.abundfilt --savehash ecoli_ref.fastq.bz2.normC5k20.kh
+
+ecoli_ref.fastq.bz2.keep.assembly.fa: ecoli_ref.fastq.bz2.keep.abundfilt.keep
+	velveth ecoli.37 37 -short -fastq ecoli_ref.fastq.bz2.keep.abundfilt.keep
 	velvetg ecoli.37 -scaffolding no -exp_cov auto -cov_cutoff auto
 	cp ecoli.37/contigs.fa ecoli_ref.fastq.bz2.keep.assembly.fa
 
