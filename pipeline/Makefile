@@ -35,7 +35,13 @@ all: genome-reads.fa.kh genome-reads.fa.keep \
 	ecoli.keep.rawreads.map.gz.cov \
 	staph.keep.rawreads.map.gz.cov \
 	sar324.keep.rawreads.map.gz.cov \
-	sar_dn.x.sar_orig sar_orig.x.sar_dn
+	sar_dn.x.sar_orig sar_orig.x.sar_dn \
+	ecoli_ref.fastq.bz2.keep.assembly.fa \
+	sar.keep.assembly.fa \
+	staph.keep.assembly.fa \
+	orig_vs_staph_assembly.report \
+	orig_vs_ecoli_assembly.report \
+	sar_assembly.report
 
 copydata:
 	rm -fr ../data/
@@ -44,6 +50,12 @@ copydata:
 
 clean:
 	rm -f `cat clean-list.txt`
+
+cleankh:
+	rm -f bacteria_mda_lane1.fastq.bz2.normC20k20.kh \
+		bacteria_mda_lane7.fastq.bz2.normC20k20.kh \
+		ecoli_ref.fastq.bz2.normC20k20.kh
+
 
 calc-r2.txt: calc-r2.py
 	python calc-r2.py > calc-r2.txt
@@ -295,12 +307,16 @@ bacteria_mda_lane1.fastq.bz2.keep.abundfilt: bacteria_mda_lane1.fastq.bz2.keep
 	$(KHMER)/scripts/filter-abund.py bacteria_mda_lane1.fastq.bz2.normC20k20.kh bacteria_mda_lane1.fastq.bz2.keep
 
 bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep: bacteria_mda_lane1.fastq.bz2.keep.abundfilt
-	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 5 bacteria_mda_lane1.fastq.bz2.keep.abundfilt --savehash ecoli_ref.fastq.bz2.normC5k20.kh
+	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 5 bacteria_mda_lane1.fastq.bz2.keep.abundfilt
 
 sar.keep.assembly.fa: bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep
 	velveth sar.27 27 -short -fastq bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep
 	velvetg sar.27 -scaffolding no -exp_cov auto -cov_cutoff auto
-	cp sar.27/contigs.fa sar.keep.assembly.fa
+	python $(KHMER)/sandbox/extract-long-sequences.py 1000 sar.27/contigs.fa > sar.keep.assembly.fa
+	#	cp sar.27/contigs.fa sar.keep.assembly.fa
+
+sar_assembly.report: sar324_contigs_lane1.fa sar.keep.assembly.fa
+	dnadiff sar324_contigs_lane1.fa sar.keep.assembly.fa -p sar_assembly
 
 bacteria_mda_lane7.fastq.bz2.keep: bacteria_mda_lane7.fastq.bz2
 	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 20 bacteria_mda_lane7.fastq.bz2 --savehash bacteria_mda_lane7.fastq.bz2.normC20k20.kh
@@ -309,12 +325,16 @@ bacteria_mda_lane7.fastq.bz2.keep.abundfilt: bacteria_mda_lane7.fastq.bz2.keep
 	$(KHMER)/scripts/filter-abund.py bacteria_mda_lane7.fastq.bz2.normC20k20.kh bacteria_mda_lane7.fastq.bz2.keep
 
 bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep: bacteria_mda_lane7.fastq.bz2.keep.abundfilt
-	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 5 bacteria_mda_lane7.fastq.bz2.keep.abundfilt --savehash bacteria_mda_lane7.fastq.bz2.normC5k20.kh
+	$(KHMER)/scripts/normalize-by-median.py -k 20 -N 4 -x 1.6e9 -C 5 bacteria_mda_lane7.fastq.bz2.keep.abundfilt
 
 staph.keep.assembly.fa: bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep
 	velveth staph.27 27 -short -fastq bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep
 	velvetg staph.27 -scaffolding no -exp_cov auto -cov_cutoff auto
-	cp staph.27/contigs.fa staph.keep.assembly.fa
+	python $(KHMER)/sandbox/extract-long-sequences.py 1000 staph.27/contigs.fa > staph.keep.assembly.fa
+	#	cp staph.27/contigs.fa staph.keep.assembly.fa
+
+orig_vs_staph_assembly.report: staph-genome.fa staph.keep.assembly.fa
+	dnadiff staph-genome.fa staph.keep.assembly.fa -p orig_vs_staph_assembly
 
 ecoli_ref.fastq.bz2.keep: ecoli_ref.fastq.bz2
 	$(KHMER)/scripts/normalize-by-median.py -R ecoli_ref.report -k 20 -N 4 -x 1.6e9 -C 20 ecoli_ref.fastq.bz2 --savehash ecoli_ref.fastq.bz2.normC20k20.kh
@@ -328,7 +348,11 @@ ecoli_ref.fastq.bz2.keep.abundfilt.keep: ecoli_ref.fastq.bz2.keep.abundfilt
 ecoli_ref.fastq.bz2.keep.assembly.fa: ecoli_ref.fastq.bz2.keep.abundfilt.keep
 	velveth ecoli.37 37 -short -fastq ecoli_ref.fastq.bz2.keep.abundfilt.keep
 	velvetg ecoli.37 -scaffolding no -exp_cov auto -cov_cutoff auto
-	cp ecoli.37/contigs.fa ecoli_ref.fastq.bz2.keep.assembly.fa
+	python $(KHMER)/sandbox/extract-long-sequences.py 1000 ecoli.37/contigs.fa > ecoli_ref.fastq.bz2.keep.assembly.fa
+	# 	cp ecoli.37/contigs.fa ecoli_ref.fastq.bz2.keep.assembly.fa
+
+orig_vs_ecoli_assembly.report: ecoliMG1655.fa ecoli_ref.fastq.bz2.keep.assembly.fa
+	dnadiff ecoliMG1655.fa ecoli_ref.fastq.bz2.keep.assembly.fa -p orig_vs_ecoli_assembly
 
 ecoli_dn.faa: ecoli_ref.fastq.bz2.keep.assembly.fa
 	/mnt/prokka-1.7/bin/prokka ecoli_ref.fastq.bz2.keep.assembly.fa --outdir ecoli_dn --prefix ecoli_dn --force
@@ -373,13 +397,13 @@ sar324.rawreads.map.gz: sar324.1.ebwt bacteria_mda_lane1.fastq.bz2
 	bunzip2 -c bacteria_mda_lane1.fastq.bz2 | bowtie -p 8 -q -a --best --strata sar324 - | gzip -9c > sar324.rawreads.map.gz
 
 staph.keep.rawreads.map.gz: staph.1.ebwt bacteria_mda_lane7.fastq.bz2.keep
-	cat bacteria_mda_lane7.fastq.bz2.keep | bowtie -p 8 -f -a --best --strata staph - | gzip -9c > staph.keep.rawreads.map.gz
+	cat bacteria_mda_lane7.fastq.bz2.keep | bowtie -p 8 -q -a --best --strata staph - | gzip -9c > staph.keep.rawreads.map.gz
 
 ecoli.keep.rawreads.map.gz: ecoliMG1655.1.ebwt  ecoli_ref.fastq.bz2.keep
-	cat ecoli_ref.fastq.bz2.keep | bowtie -p 8 -f -a --best --strata ecoliMG1655 - | gzip -9c > ecoli.keep.rawreads.map.gz
+	cat ecoli_ref.fastq.bz2.keep | bowtie -p 8 -q -a --best --strata ecoliMG1655 - | gzip -9c > ecoli.keep.rawreads.map.gz
 
 sar324.keep.rawreads.map.gz: sar324.1.ebwt bacteria_mda_lane1.fastq.bz2.keep
-	cat bacteria_mda_lane1.fastq.bz2.keep | bowtie -p 8 -f -a --best --strata sar324 - | gzip -9c > sar324.keep.rawreads.map.gz
+	cat bacteria_mda_lane1.fastq.bz2.keep | bowtie -p 8 -q -a --best --strata sar324 - | gzip -9c > sar324.keep.rawreads.map.gz
 
 ecoli.keep.rawreads.map.gz.cov: ecoli.keep.rawreads.map.gz
 	python mapping-genome-cov-3.py ecoliMG1655.fa ecoli.keep.rawreads.map.gz ecoli.keep.rawreads.map.gz.cov
