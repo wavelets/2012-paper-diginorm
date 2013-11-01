@@ -58,7 +58,7 @@ In this case we're going to use the versions tagged for the paper sub.::
  make test
  cd ..
 
- echo export PYTHONPATH=/usr/local/share/khmer/python >> ~/.bashrc
+ echo export PYTHONPATH=/usr/local/share/khmer >> ~/.bashrc
  echo 'export PATH=$PATH:/usr/local/share/khmer/scripts' >> ~/.bashrc
  echo 'export PATH=$PATH:/usr/local/share/khmer/sandbox' >> ~/.bashrc
  source ~/.bashrc
