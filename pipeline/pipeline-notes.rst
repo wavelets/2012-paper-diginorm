@@ -110,7 +110,7 @@ sets::
  tar xzf pipeline-data-new.tar.gz
 
 Now go into the pipeline directory and run the pipeline.  This will take
-4-8 hours, so you might want to do it in 'screen' (see :doc:`../tutorials-2011/unix_long_jobs`). ::
+24-36 hours, so you might want to do it in 'screen' (see http://ged.msu.edu/angus/tutorials-2011/unix_long_jobs.html). ::
 
  cd pipeline
  make KHMER=/usr/local/share/khmer
