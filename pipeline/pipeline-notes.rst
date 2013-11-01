@@ -102,6 +102,7 @@ Running the pipeline
 First, check out the source repository and grab the (...large) initial data
 sets::
 
+ cd /mnt
  git clone https://github.com/ged-lab/2012-paper-diginorm.git
  cd 2012-paper-diginorm
 
