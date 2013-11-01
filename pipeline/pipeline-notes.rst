@@ -46,13 +46,13 @@ In this case we're going to use the versions tagged for the paper sub.::
 
  cd /usr/local/share
 
- git clone git://github.com/ged-lab/screed.git
+ git clone https://github.com/ged-lab/screed.git
  cd screed
  git checkout 2012-paper-diginorm
  python setup.py install
  cd ..
 
- git clone git://github.com/ged-lab/khmer.git
+ git clone https://github.com/ged-lab/khmer.git
  cd khmer
  git checkout 2012-paper-diginorm
  make test
@@ -89,9 +89,10 @@ and Velvet::
  make MAXKMERLENGTH=51
  cp velvet? /usr/local/bin
 
-Finally, upgrade the latex install with a few recommended packages::
+Finally, upgrade the latex install with a few recommended packages, and
+add mummer::
 
- apt-get install -y texlive-latex-recommended
+ apt-get install -y texlive-latex-recommended mummer
 
 OK, now all your software is installed, hurrah!
 
