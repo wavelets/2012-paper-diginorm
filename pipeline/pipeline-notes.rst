@@ -109,10 +109,12 @@ sets::
  curl -O https://s3.amazonaws.com/public.ged.msu.edu/2012-paper-diginorm/pipeline-data-new.tar.gz
  tar xzf pipeline-data-new.tar.gz
 
-Now go into the pipeline directory and run the pipeline.  This will take
-24-36 hours, so you might want to do it in 'screen' (see http://ged.msu.edu/angus/tutorials-2011/unix_long_jobs.html). ::
+Now go into the pipeline directory and install Prokka & run the pipeline.  This
+will take 24-36 hours, so you might want to do it in 'screen' (see
+http://ged.msu.edu/angus/tutorials-2011/unix_long_jobs.html). ::
 
  cd pipeline
+ bash install-prokka.sh
  make KHMER=/usr/local/share/khmer
 
 Once it successfully completes, copy the data over to the ../data/ directory::
