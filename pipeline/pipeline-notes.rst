@@ -46,19 +46,19 @@ In this case we're going to use the versions tagged for the paper sub.::
 
  cd /usr/local/share
 
- git clone git://github.com/ged-lab/screed.git
+ git clone https://github.com/ged-lab/screed.git
  cd screed
  git checkout 2012-paper-diginorm
  python setup.py install
  cd ..
 
- git clone git://github.com/ged-lab/khmer.git
+ git clone https://github.com/ged-lab/khmer.git
  cd khmer
  git checkout 2012-paper-diginorm
  make test
  cd ..
 
- echo export PYTHONPATH=/usr/local/share/khmer/python >> ~/.bashrc
+ echo export PYTHONPATH=/usr/local/share/khmer >> ~/.bashrc
  echo 'export PATH=$PATH:/usr/local/share/khmer/scripts' >> ~/.bashrc
  echo 'export PATH=$PATH:/usr/local/share/khmer/sandbox' >> ~/.bashrc
  source ~/.bashrc
@@ -89,9 +89,10 @@ and Velvet::
  make MAXKMERLENGTH=51
  cp velvet? /usr/local/bin
 
-Finally, upgrade the latex install with a few recommended packages::
+Finally, upgrade the latex install with a few recommended packages, and
+add mummer::
 
- apt-get install -y texlive-latex-recommended
+ apt-get install -y texlive-latex-recommended mummer
 
 OK, now all your software is installed, hurrah!
 
@@ -101,16 +102,19 @@ Running the pipeline
 First, check out the source repository and grab the (...large) initial data
 sets::
 
+ cd /mnt
  git clone https://github.com/ged-lab/2012-paper-diginorm.git
  cd 2012-paper-diginorm
 
  curl -O https://s3.amazonaws.com/public.ged.msu.edu/2012-paper-diginorm/pipeline-data-new.tar.gz
  tar xzf pipeline-data-new.tar.gz
 
-Now go into the pipeline directory and run the pipeline.  This will take
-4-8 hours, so you might want to do it in 'screen' (see :doc:`../tutorials-2011/unix_long_jobs`). ::
+Now go into the pipeline directory and install Prokka & run the pipeline.  This
+will take 24-36 hours, so you might want to do it in 'screen' (see
+http://ged.msu.edu/angus/tutorials-2011/unix_long_jobs.html). ::
 
  cd pipeline
+ bash install-prokka.sh
  make KHMER=/usr/local/share/khmer
 
 Once it successfully completes, copy the data over to the ../data/ directory::
