@@ -11,7 +11,9 @@ The instructions below will reproduce all of the figures in the paper,
 and will then compile the paper from scratch using the new figures.
 
 (Note that you can also start with ami-61885608, which has all the
-below software installed.)
+below software installed.
+Make sure that you select US East (N. Virginia) as your region in
+the upper right toolbar)
 
 .. and the EC2 snapshot snap-09d7f173 has all
 .. of the data on it.  If you mount that volume and then cp -r everything
@@ -111,7 +113,7 @@ Once it successfully completes, copy the data over to the ../data/ directory::
 Run the ipython notebook server::
 
  cd ../notebook
- ipython notebook --pylab=inline --no-browser --ip=* --port=80 &
+ ipython notebook --no-browser --ip=* --port=80 &
 
 Connect into the ipython notebook (it will be running at 'http://<your EC2 hostname>'); if the above command succeeded but you can't connect in, you probably forgot to enable port 80 on your EC2 firewall.
 
