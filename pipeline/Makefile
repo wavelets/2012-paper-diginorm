@@ -65,12 +65,14 @@ random.fa:
 
 random.fa.hb: random.fa
 	${KHMER}/sandbox/load-into-hashbits.py -k 20 -N 4 -x 1e8 random.fa.hb random.fa
+	#replace with a call to loadgraph
 
 transcripts.fa:
 	python make-random-transcriptome.py > transcripts.fa
 
 transcripts.fa.hb: transcripts.fa
 	${KHMER}/sandbox/load-into-hashbits.py -k 20 -N 4 -x 1e8 transcripts.fa.hb transcripts.fa
+	#replace with a call to loadgraph
 
 genome-reads.fa: random.fa
 	python make-reads.py random.fa > genome-reads.fa

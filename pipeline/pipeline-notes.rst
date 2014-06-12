@@ -46,15 +46,13 @@ In this case we're going to use the versions tagged for the paper sub.::
 
  cd /usr/local/share
 
- git clone https://github.com/ged-lab/screed.git
- cd screed
- git checkout 2012-paper-diginorm
- python setup.py install
- cd ..
+ # maybe this --> pip install git+https://github.com/ged-lab/khmer.git@master#egg=khmer
+
+ ln -s /usr/bin/python2.7 /usr/bin/python2
 
  git clone https://github.com/ged-lab/khmer.git
  cd khmer
- git checkout 2012-paper-diginorm
+ git checkout v1.0.1
  make test
  cd ..
 
