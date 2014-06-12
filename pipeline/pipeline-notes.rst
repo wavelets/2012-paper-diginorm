@@ -46,10 +46,13 @@ In this case we're going to use the versions tagged for the paper sub.::
 
  cd /usr/local/share
 
+<<<<<<< HEAD
  # maybe this --> pip install git+https://github.com/ged-lab/khmer.git@master#egg=khmer
 
  ln -s /usr/bin/python2.7 /usr/bin/python2
 
+=======
+>>>>>>> fa87bb385a3311333a6bdaa1cc60f4f6e2ae175a
  git clone https://github.com/ged-lab/khmer.git
  cd khmer
  git checkout v1.0.1
