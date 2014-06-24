@@ -28,20 +28,23 @@ Make sure that port 22 (SSH) and port 80 (HTTP) are open; you'll need
 the first one to log in, and the second one to connect to the ipython
 notebook.
 
-Just ssh in however you would normally do it.
-
-Once you're logged in, you'll need to install both 'screed' and 'khmer'.
-In this case we're going to use the versions tagged for the paper sub.::
+Just ssh in however you would normally do it. And then set a few things
+up for ubuntu::
 
  sudo su
-
 
  apt-get update
  apt-get -y install screen git curl gcc make g++ python-dev unzip \
             default-jre pkg-config libncurses5-dev r-base-core \
                        r-cran-gplots python-matplotlib sysstat
 
+Now, you'll need to install both 'screed' and 'khmer'.
+In this case we're going to use the versions tagged for the paper sub.::
+
  cd /usr/local/share
+
+We will need pip, ipython, and the ipython notebook.  Make sure we have 
+the latest version of ipython notebook (you need 0.13dev, or later) ::
 
  apt-get install python-pip
  apt-get install ipython
@@ -66,13 +69,14 @@ In this case we're going to use the versions tagged for the paper sub.::
  source ~/.bashrc
 
 OK, now that these are both built, let's install a few other things: some
-software, the latest version of ipython notebook (you need 0.13dev, or later)::
+software, ::
 
 and bowtie::
 
  apt-get install bowtie
 
-and Velvet::
+and Velvet. (We need to do this the old fashioned way to set our default
+max kmer length)::
 
  cd /root
  curl -O http://www.ebi.ac.uk/~zerbino/velvet/velvet_1.2.10.tgz
@@ -107,6 +111,7 @@ http://ged.msu.edu/angus/tutorials-2011/unix_long_jobs.html). ::
 
  cd pipeline
  bash install-prokka.sh
+
  cpan install XML::Simple
  cpan>install Bundle::CPAN
 
