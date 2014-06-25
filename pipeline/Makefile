@@ -312,7 +312,7 @@ bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep: bacteria_mda_lane1.fastq.bz2.k
 sar.keep.assembly.fa: bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep
 	velveth sar.27 27 -short -fastq bacteria_mda_lane1.fastq.bz2.keep.abundfilt.keep
 	velvetg sar.27 -scaffolding no -exp_cov auto -cov_cutoff auto
-	python $(KHMER)/sandbox/extract-long-sequences.py 1000 sar.27/contigs.fa > sar.keep.assembly.fa
+	python $(KHMER)/scripts/extract-long-sequences.py -l 1000 sar.27/contigs.fa -o sar.keep.assembly.fa
 	#	cp sar.27/contigs.fa sar.keep.assembly.fa
 
 sar_assembly.report: sar324_contigs_lane1.fa sar.keep.assembly.fa
@@ -330,7 +330,7 @@ bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep: bacteria_mda_lane7.fastq.bz2.k
 staph.keep.assembly.fa: bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep
 	velveth staph.27 27 -short -fastq bacteria_mda_lane7.fastq.bz2.keep.abundfilt.keep
 	velvetg staph.27 -scaffolding no -exp_cov auto -cov_cutoff auto
-	python $(KHMER)/sandbox/extract-long-sequences.py 1000 staph.27/contigs.fa > staph.keep.assembly.fa
+	python $(KHMER)/scripts/extract-long-sequences.py -l 1000 staph.27/contigs.fa -o staph.keep.assembly.fa
 	#	cp staph.27/contigs.fa staph.keep.assembly.fa
 
 orig_vs_staph_assembly.report: staph-genome.fa staph.keep.assembly.fa
@@ -348,7 +348,7 @@ ecoli_ref.fastq.bz2.keep.abundfilt.keep: ecoli_ref.fastq.bz2.keep.abundfilt
 ecoli_ref.fastq.bz2.keep.assembly.fa: ecoli_ref.fastq.bz2.keep.abundfilt.keep
 	velveth ecoli.37 37 -short -fastq ecoli_ref.fastq.bz2.keep.abundfilt.keep
 	velvetg ecoli.37 -scaffolding no -exp_cov auto -cov_cutoff auto
-	python $(KHMER)/sandbox/extract-long-sequences.py 1000 ecoli.37/contigs.fa > ecoli_ref.fastq.bz2.keep.assembly.fa
+	python $(KHMER)/scripts/extract-long-sequences.py -l 1000 ecoli.37/contigs.fa -o ecoli_ref.fastq.bz2.keep.assembly.fa
 	# 	cp ecoli.37/contigs.fa ecoli_ref.fastq.bz2.keep.assembly.fa
 
 orig_vs_ecoli_assembly.report: ecoliMG1655.fa ecoli_ref.fastq.bz2.keep.assembly.fa

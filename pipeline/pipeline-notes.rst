@@ -24,37 +24,41 @@ below software installed.)
 Starting up a machine and installing software
 ---------------------------------------------
 
-First, start up an EC2 instance using starcluster::
-
- starcluster start -o -s 1 -i m2.xlarge -n ami-999d49f0 pipeline
-
-You can also do this via the AWS console; just use ami-999d49f0, and
-start an instance with 16gb or more of memory.
-
 Make sure that port 22 (SSH) and port 80 (HTTP) are open; you'll need
 the first one to log in, and the second one to connect to the ipython
 notebook.
 
-Now, log in! ::
+Just ssh in however you would normally do it. And then set a few things
+up for ubuntu::
 
- starcluster sshmaster pipeline
+ sudo su
 
-(or just ssh in however you would normally do it.)
+ apt-get update
+ apt-get -y install screen git curl gcc make g++ python-dev unzip \
+            default-jre pkg-config libncurses5-dev r-base-core \
+                       r-cran-gplots python-matplotlib sysstat
 
-Once you're logged in, you'll need to install both 'screed' and 'khmer'.
+
+We will need pip, ipython, and the ipython notebook.  Make sure we have 
+the latest version of ipython notebook (you need 0.13dev, or later) ::
+
+ apt-get install python-pip
+ apt-get install ipython
+ apt-get install ipython-notebook
+
+Now, you'll need to install both 'screed' and 'khmer'.
 In this case we're going to use the versions tagged for the paper sub.::
 
  cd /usr/local/share
-
  git clone https://github.com/ged-lab/screed.git
  cd screed
- git checkout 2012-paper-diginorm
+ git checkout master
  python setup.py install
  cd ..
 
  git clone https://github.com/ged-lab/khmer.git
  cd khmer
- git checkout 2012-paper-diginorm
+ git checkout v1.1
  make test
  cd ..
 
@@ -64,23 +68,14 @@ In this case we're going to use the versions tagged for the paper sub.::
  source ~/.bashrc
 
 OK, now that these are both built, let's install a few other things: some
-software, the latest version of ipython notebook (you need 0.13dev, or later)::
-
- git clone https://github.com/ipython/ipython.git
- cd ipython
- python setup.py install
-
- pip install -U pyzmq
+software, ::
 
 and bowtie::
 
- cd /mnt
+ apt-get install bowtie
 
- curl -L -O http://sourceforge.net/projects/bowtie-bio/files/bowtie/0.12.7/bowtie-0.12.7-linux-x86_64.zip/download
- unzip download
- cp bowtie-0.12.7/bowtie{,-build} /usr/local/bin
-
-and Velvet::
+and Velvet. (We need to do this the old fashioned way to set our default
+max kmer length)::
 
  cd /root
  curl -O http://www.ebi.ac.uk/~zerbino/velvet/velvet_1.2.10.tgz
